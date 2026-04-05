@@ -1,13 +1,13 @@
 "use client";
 import React from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Zap, 
-  Dumbbell, 
-  Users, 
-  Droplets, 
-  ShieldCheck, 
-  Wind, 
+import {
+  Zap,
+  Dumbbell,
+  Users,
+  Droplets,
+  ShieldCheck,
+  Wind,
   Timer,
   Award,
   Instagram
@@ -68,21 +68,26 @@ const AboutPage = () => {
             <p className="text-gray-400 font-medium text-lg leading-relaxed uppercase mb-6 italic">
               Bajrang Fitness started with one mission: To bring elite-level training standards to Haldwani.
             </p>
-            <p className="text-gray-500 font-bold text-sm leading-loose">
-              We believe that fitness is not just about looking good, but about developing the discipline and strength of a warrior. Since our inception, we have been committed to providing an atmosphere where every drop of sweat counts. Whether you are a beginner or a pro athlete, our arena is built to push your limits.
-            </p>
+            <div className='text-gray-400 font-bold text-xs uppercase tracking-[0.15em] leading-loose'>
+              Born and built in <span className="text-white">Haldwani</span>, we started with a simple mission — to give the people of <span className="text-white">Haldwani</span> a fitness space they truly deserve. Not a flashy chain, not a far-away facility. A <span className="text-orange-500">real neighbourhood gym</span> on <span className="text-white">Pilikothi Road</span>, run by people who live here, just like you.
+
+              <div className='mt-3'>Whether you are a student from the local school, a working professional, a homemaker, or someone who just wants to feel better, Our gym in <span className="text-white">Haldwani</span> has a place for you. We have seen beginners become athletes, and we have watched our members grow into a <span className="text-orange-500">tight knit community</span>.</div>
+              <div className="mt-3">
+                <span className='text-orange-500'>Our certified trainers</span> know <span className="text-white">Haldwani's lifestyle</span> the food, the weather, the schedules. That means your fitness plan is <span className="text-white">built for your real life</span>, not someone else's.
+              </div>
+            </div>
           </motion.div>
-          
-          <motion.div 
+
+          <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             className="relative h-[400px] md:h-[600px] border-l-8 border-orange-600 shadow-[20px_20px_0px_#111]"
           >
-            <Image 
-              src="https://images.unsplash.com/photo-1593079831268-3381b0db4a77?q=80&w=2069" 
-              alt="Gym Interior" 
-              fill 
-              className="object-cover grayscale hover:grayscale-0 transition-all duration-700" 
+            <Image
+              src="https://images.unsplash.com/photo-1593079831268-3381b0db4a77?q=80&w=2069"
+              alt="Gym Interior"
+              fill
+              className="object-cover transition-all duration-700"
             />
           </motion.div>
         </div>

@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import SmoothScroll from "./components/SmoothScroll";
 
 // Variables for cleaner code
-const title = "Bajrang Fitness: Premium Gym & Fitness Center in Haldwani";
-const description = "Transform at Bajrang Fitness, the best gym in Pilikothi, Haldwani. Experience elite coaching, premium equipment, and a hardcore iron vibe. Join the tribe today!";
+const title = "Bajrang Fitness Best Gym in Haldwani | Fitness Center – Pilikothi Road";
+const description = "Join the best gym in Haldwani on Pilikothi Road. Expert personal trainers, modern equipment, weight loss & bodybuilding programs. Start your fitness journey today!";
 
 export const metadata: Metadata = {
   title: title,
@@ -38,11 +39,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="scroll-smooth">
       <body
         className={`antialiased`}
       >
-        {children}
+        <SmoothScroll>
+          {children}
+        </SmoothScroll>
       </body>
     </html>
   );

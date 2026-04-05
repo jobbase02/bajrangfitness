@@ -7,7 +7,7 @@ import Link from 'next/link';
 const Cta = () => {
   return (
     <section className="py-24 px-4 md:px-8 bg-[#050505] border-t border-white/5 relative overflow-hidden">
-      
+
       {/* Background large text effect (Untouched & Intact) */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center pointer-events-none opacity-5 flex flex-col leading-none z-0">
         <span className="text-[15vw] font-[1000] uppercase italic text-transparent stroke-text" style={{ WebkitTextStroke: '2px white' }}>BAJRANG</span>
@@ -16,7 +16,7 @@ const Cta = () => {
 
       {/* Reduced max-w from 5xl to 3xl to make the box smaller */}
       <div className="max-w-3xl mx-auto relative z-10">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -37,14 +37,13 @@ const Cta = () => {
 
             <div className="flex items-center justify-center gap-3 text-orange-500 font-black uppercase tracking-[0.4em] text-[10px] mb-4">
               <Zap size={14} fill="currentColor" />
-              The Arena Awaits
+              We are waiting
               <Zap size={14} fill="currentColor" />
             </div>
 
             {/* Reduced Heading Size */}
             <h2 className="text-4xl md:text-5xl font-[1000] uppercase italic text-white leading-tight tracking-tighter mb-6">
-              READY TO JOIN <br/>
-              <span className="text-orange-500 underline decoration-4 underline-offset-8">THE TRIBE?</span>
+              JOIN <span className="text-orange-500 underline decoration-4 underline-offset-8">THE Family?</span>
             </h2>
 
             {/* Reduced Paragraph Size */}
@@ -53,11 +52,11 @@ const Cta = () => {
             </p>
 
             {/* Reduced Button Size */}
-            <Link 
-              href="/inquire" 
+            <Link
+              href="/inquire"
               className="inline-flex items-center gap-3 bg-orange-600 text-black px-8 py-4 font-black uppercase text-sm md:text-base tracking-widest hover:bg-white transition-all shadow-[6px_6px_0px_rgba(255,255,255,0.15)] hover:shadow-none transform hover:translate-y-1 hover:translate-x-1 group/btn rounded-xl"
             >
-              Start Your Journey 
+              Start Your Journey Today
               <div className="bg-black/10 group-hover/btn:bg-black/5 p-2 rounded-full transition-colors">
                 <ArrowRight size={20} className="group-hover/btn:translate-x-1 transition-transform" />
               </div>

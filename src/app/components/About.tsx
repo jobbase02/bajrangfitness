@@ -6,13 +6,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const About = () => {
   const videos = [
-    "/video1.mp4", 
-    "/video2.mp4", 
-    "/video3.mp4"
+    "/Video1.mp4",
+    "/Video2.mp4",
+    "/Video3.mp4"
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [isIdentityExpanded, setIsIdentityExpanded] = useState(false);
 
   // Auto-play logic with hover pause
   useEffect(() => {
@@ -43,32 +44,48 @@ const About = () => {
 
   return (
     <section id="about" className="py-24 px-4 md:px-8 max-w-7xl mx-auto border-t border-white/5 bg-[#050505] overflow-hidden">
-      
+
       {/* SECTION HEADER */}
       <div className="mb-14">
-        <h2 className="text-orange-500 font-black tracking-widest uppercase text-sm mb-2 italic">The Arena</h2>
-        <h3 className="text-5xl md:text-6xl font-black uppercase italic text-white tracking-tighter">
-          WHO WE <span className="text-orange-500 underline decoration-4 underline-offset-8">ARE</span>
+        <h2 className="text-orange-500 font-black tracking-widest uppercase text-sm mb-2 italic">Our Story — Rooted in Haldwani</h2>
+        <h3 className="text-5xl md:text-6xl font-black uppercase text-white tracking-tighter">
+          We Are More
+          Than Gym <br />
+          <span className="text-orange-500 font-semibold italic decoration-4 underline-offset-8"> — We're Family.</span>
         </h3>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-        
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+
         {/* --- LEFT SIDE: UPGRADED IDENTITY UI (5 Columns) --- */}
         <div className="lg:col-span-5 flex flex-col gap-5 h-full justify-center">
-          
+
           {/* Main Identity Box */}
           <div className="bg-zinc-900/40 p-8 rounded-3xl border border-white/5 relative group overflow-hidden">
             {/* Subtle Glow Effect inside the box */}
-            <div className="absolute top-0 right-0 w-40 h-40 bg-orange-600/10 rounded-full blur-[50px] -mr-10 -mt-10 transition-all duration-700 group-hover:bg-orange-600/20" />
-            
-            <h4 className="text-orange-500 font-black uppercase tracking-widest text-[10px] mb-3">Our Identity</h4>
-            <h2 className="text-3xl md:text-4xl font-black uppercase italic text-white leading-[1.1] mb-5">
-              Haldwani's Premium<br/>Iron Syndicate
-            </h2>
-            <p className="text-gray-400 font-bold text-xs uppercase tracking-[0.15em] leading-loose">
-              We aren't just a commercial gym. Bajrang Fitness is a sanctuary built for those who demand more. No shortcuts, no gimmicks—just pure dedication and heavy lifting.
-            </p>
+            <div className="hidden md:block absolute top-0 right-0 w-40 h-40 bg-orange-600/10 rounded-full blur-[50px] -mr-10 -mt-10 transition-all duration-700 group-hover:bg-orange-600/20" />
+
+            <h2 className="text-white font-black uppercase tracking-widest text-lg mb-3 relative z-10">Our Identity</h2>
+            <div className="text-gray-400 font-bold text-xs uppercase tracking-[0.15em] leading-loose relative z-10">
+              Born and built in <span className="text-white">Haldwani</span>, we started with a simple mission — to give the people of <span className="text-white">Haldwani</span> a fitness space they truly deserve. Not a flashy chain, not a far-away facility. A <span className="text-orange-500">real neighbourhood gym</span> on <span className="text-white">Pilikothi Road</span>, run by people who live here, just like you.
+
+              {/* Full Text Displayed Natively on Mobile */}
+              <div className="md:hidden">
+                <div className='mt-3'>Whether you are a student from the local school, a working professional, a homemaker, or someone who just wants to feel better, Our gym in <span className="text-white">Haldwani</span> has a place for you. We have seen beginners become athletes, and we have watched our members grow into a <span className="text-orange-500">tight knit community</span>.</div>
+                <div className="mt-3">
+                  <span className='text-orange-500'>Our certified trainers</span> know <span className="text-white">Haldwani's lifestyle</span> the food, the weather, the schedules. That means your fitness plan is <span className="text-white">built for your real life</span>, not someone else's.
+                </div>
+              </div>
+
+              {/* Keep Link only for Desktop */}
+              <Link
+                href="/about"
+                className="hidden md:inline-flex mt-6 items-center gap-2 px-4 py-2 bg-orange-500/10 text-orange-500 hover:bg-orange-600 hover:text-white rounded-full transition-all group tracking-widest text-[10px] font-black"
+              >
+                KNOW MORE
+                <ArrowRight size={14} className="transform transition-transform group-hover:translate-x-1" />
+              </Link>
+            </div>
           </div>
 
           {/* Two Feature Cards */}
@@ -87,36 +104,47 @@ const About = () => {
             </div>
           </div>
 
-          {/* Dedicated CTA Button */}
-          <Link 
-            href="/about" 
-            className="w-full flex items-center justify-between bg-orange-600 p-6 rounded-3xl hover:bg-white text-black transition-all duration-300 group shadow-[0_5px_20px_rgba(249,115,22,0.15)] hover:shadow-[0_5px_20px_rgba(255,255,255,0.3)] mt-2"
-          >
-            <span className="font-black uppercase tracking-widest text-sm">Explore Our Full Story</span>
-            <div className="bg-black/10 group-hover:bg-black/5 p-2 rounded-full">
-              <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+          {/* Founder Quote */}
+          <div className="bg-zinc-900 rounded-r-3xl rounded-l-md border border-white/5 border-l-[4px] border-l-orange-500 p-6 lg:p-7 relative group shadow-xl my-2 hover:border-orange-500/50 transition-colors duration-300">
+            <p className="text-gray-300 font-serif italic text-lg lg:text-xl leading-relaxed mb-6">
+              "We wanted to build a gym where people walk in nervous and leave feeling like they belong. That's what we have created here in Haldwani, <span className='text-orange-500'>a home for fitness.</span>"
+            </p>
+            <div className="flex items-center gap-4">
+              {/* Avatar */}
+              <div className="w-14 h-14 rounded-full bg-orange-600 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-500">
+                <span className="text-white font-black text-xl tracking-wide">YN</span>
+              </div>
+              {/* Name & Title */}
+              <div className="flex flex-col">
+                <span className="text-white text-base">
+                  <span className="font-black">[Owner Name]</span> <span className="text-gray-400">— Owner</span>
+                </span>
+                <span className="text-orange-500/80 font-bold text-xs uppercase tracking-widest mt-1">
+                  Pilikothi Road · Haldwani
+                </span>
+              </div>
             </div>
-          </Link>
+          </div>
 
         </div>
 
         {/* --- RIGHT SIDE: 3D SLANTED CAROUSEL (7 Columns) --- */}
-        <div 
+        <div
           className="lg:col-span-7 relative h-[500px] md:h-[650px] w-full flex items-center justify-center perspective-[1000px]"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-          
+
           {/* Navigation Arrows */}
-          <button 
-            onClick={handlePrev} 
+          <button
+            onClick={handlePrev}
             className="absolute left-0 md:-left-2 z-40 bg-black/60 hover:bg-orange-600 text-white p-3 md:p-4 rounded-full border border-white/10 backdrop-blur-md transition-all transform hover:scale-110"
           >
             <ChevronLeft size={24} />
           </button>
-          
-          <button 
-            onClick={handleNext} 
+
+          <button
+            onClick={handleNext}
             className="absolute right-0 md:-right-2 z-40 bg-black/60 hover:bg-orange-600 text-white p-3 md:p-4 rounded-full border border-white/10 backdrop-blur-md transition-all transform hover:scale-110"
           >
             <ChevronRight size={24} />
@@ -142,13 +170,14 @@ const About = () => {
                       filter: styles.filter,
                     }}
                     transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }} // Smooth Apple-like spring ease
-                    onClick={() => !isActive && setCurrentIndex(index)} 
+                    onClick={() => !isActive && setCurrentIndex(index)}
                   >
-                    <video 
-                      autoPlay 
-                      loop 
-                      muted 
-                      playsInline 
+                    <video
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      suppressHydrationWarning
                       className="w-full h-full object-cover"
                     >
                       <source src={src} type="video/mp4" />
