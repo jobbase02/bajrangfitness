@@ -1,8 +1,15 @@
 import { CheckCircle2 } from 'lucide-react';
 import Link from 'next/link'; // Import Link for routing
 
+type PlanType = {
+  name: string;
+  price: string;
+  duration: string;
+  popular?: boolean;
+};
+
 const Plans = () => {
-  const plans = [
+  const plans: PlanType[] = [
     { name: "Starter", price: "999", duration: "1 Month" },
     { name: "Quarterly", price: "2499", duration: "3 Months" },
     { name: "Half Yearly", price: "4499", duration: "6 Months" },
