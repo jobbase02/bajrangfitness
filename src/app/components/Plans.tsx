@@ -11,7 +11,7 @@ type PlanType = {
 const Plans = () => {
   const plans: PlanType[] = [
     { name: "Starter", price: "999", duration: "1 Month" },
-    { name: "Quarterly", price: "2499", duration: "3 Months" },
+    { name: "Quarterly", price: "2499", duration: "3 Months", popular: true },
     { name: "Half Yearly", price: "4499", duration: "6 Months" },
     { name: "Annual Elite", price: "7999", duration: "12 Months" },
   ];
