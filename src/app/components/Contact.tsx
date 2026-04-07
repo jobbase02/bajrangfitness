@@ -1,21 +1,44 @@
 "use client";
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Phone, MapPin, Mail, Clock, Navigation } from 'lucide-react';
 
 const Contact = () => {
-  // Google Maps Auto-Direction link (Opens navigation directly to the gym)
   const googleMapsLink = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3482.407080568569!2d79.50315847531162!3d29.211578375353486!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39a09b58061ef629%3A0xacf44c6ce888aefe!2sBAJRANG%20FITNESS!5e0!3m2!1sen!2sin!4v1773832097330!5m2!1sen!2sin";
+  
+  // 1. Map loading state
+  const [loadMap, setLoadMap] = useState(false);
+  const mapRef = useRef<HTMLDivElement>(null);
+
+  // 2. Invisible Observer (The Stealth Optimizer)
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setLoadMap(true);
+          // Ek baar load ho gaya toh observer ko hata do taaki memory free ho jaye
+          observer.disconnect();
+        }
+      },
+      // 800px pehle hi load karna shuru kardo, taaki mobile users ko delay feel na ho
+      { rootMargin: '800px' } 
+    );
+
+    if (mapRef.current) {
+      observer.observe(mapRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <section 
       id="contact" 
-      aria-labelledby="contact-heading" // A11Y FIX: Link section to its heading
+      aria-labelledby="contact-heading"
       className="py-24 px-4 md:px-8 max-w-7xl mx-auto border-t border-white/5 bg-[#050505]"
     >
-
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
 
-        {/* --- LEFT SIDE: INFO CARDS (5 Columns) --- */}
+        {/* --- LEFT SIDE: INFO CARDS (Same as Before) --- */}
         <div className="lg:col-span-5 flex flex-col justify-center">
 
           <div className="mb-10">
@@ -28,7 +51,6 @@ const Contact = () => {
             </p>
           </div>
 
-          {/* Contact Details Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
             {/* Phone Card */}
@@ -36,7 +58,6 @@ const Contact = () => {
               <Phone aria-hidden="true" className="text-orange-500 mb-4 group-hover:scale-110 transition-transform" size={28} />
               <h4 className="text-white font-black uppercase text-sm mb-2">Call Us</h4>
               <div className="text-gray-300 font-medium text-sm md:text-base font-sans leading-relaxed space-y-1">
-                {/* A11Y FIX: Added focus-visible for keyboard nav */}
                 <a href="tel:+918445588806" className="hover:text-orange-500 transition-colors block focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 rounded-sm">+91 8445 588 806</a>
                 <a href="tel:+917253008213" className="hover:text-orange-500 transition-colors block focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 rounded-sm">+91 7253 008 213</a>
               </div>
@@ -47,12 +68,11 @@ const Contact = () => {
               <Mail aria-hidden="true" className="text-orange-500 mb-4 group-hover:scale-110 transition-transform" size={28} />
               <h4 className="text-white font-black uppercase text-sm mb-2">Email</h4>
               <p className="text-gray-300 font-medium text-sm font-sans break-all">
-                {/* A11Y FIX: Added focus-visible for keyboard nav */}
                 <a href="mailto:fitnessbajrang5@gmail.com" className="hover:text-orange-500 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 rounded-sm">fitnessbajrang5@gmail.com</a>
               </p>
             </div>
 
-            {/* Hours Card (Full Width) */}
+            {/* Hours Card */}
             <div className="bg-zinc-900/50 p-6 rounded-2xl border border-white/5 hover:border-orange-500/30 transition-colors group sm:col-span-2 flex items-center gap-6">
               <div className="bg-black p-3 rounded-xl shrink-0">
                 <Clock aria-hidden="true" className="text-orange-500 group-hover:rotate-12 transition-transform" size={24} />
@@ -67,7 +87,7 @@ const Contact = () => {
               </div>
             </div>
 
-            {/* Address Card (Full Width) */}
+            {/* Address Card */}
             <div className="bg-zinc-900/50 p-6 rounded-2xl border border-white/5 hover:border-orange-500/30 transition-colors group sm:col-span-2 flex items-center gap-6">
               <div className="bg-black p-3 rounded-xl shrink-0">
                 <MapPin aria-hidden="true" className="text-orange-500 group-hover:-translate-y-1 transition-transform" size={24} />
@@ -82,7 +102,6 @@ const Contact = () => {
 
           </div>
 
-          {/* Explicit Contact Message CTA */}
           <a 
             href="/inquire" 
             className="mt-8 inline-flex items-center justify-center gap-3 bg-orange-600 text-black px-10 py-5 font-black uppercase text-sm tracking-widest shadow-[0_5px_15px_rgba(234,88,12,0.3)] hover:shadow-[0_0_20px_rgba(234,88,12,0.5)] hover:bg-white hover:-translate-y-1 transition-all duration-300 group w-full rounded-xl focus:outline-none focus-visible:ring-4 focus-visible:ring-white focus-visible:ring-offset-4 focus-visible:ring-offset-black"
@@ -92,24 +111,33 @@ const Contact = () => {
           </a>
         </div>
 
-        {/* --- RIGHT SIDE: OPTIMIZED MAP SECTION (7 Columns) --- */}
-        <div className="lg:col-span-7 relative min-h-[400px] md:min-h-[500px] h-full w-full rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.5)] mt-8 lg:mt-0 flex flex-col">
+        {/* --- RIGHT SIDE: OPTIMIZED MAP SECTION --- */}
+        <div 
+          ref={mapRef} // Observer yahan nazar rakhega
+          className="lg:col-span-7 relative min-h-[400px] md:min-h-[500px] h-full w-full rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.5)] mt-8 lg:mt-0 flex flex-col bg-[#0a0a0a]"
+        >
           
-          {/* Subtle gradient overlay at the bottom so the button pops perfectly */}
           <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/80 via-black/40 to-transparent z-10 pointer-events-none" />
 
-          {/* A11Y FIX: Added descriptive 'title' attribute to iframe */}
-          <iframe
-            title="Google Maps Location for Bajrang Fitness"
-            src={googleMapsLink}
-            width="100%"
-            height="100%"
-            style={{ border: 0 }}
-            allowFullScreen={true}
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            className="absolute inset-0 w-full h-full z-0"
-          ></iframe>
+          {/* Conditional Rendering based on Scroll */}
+          {loadMap ? (
+            <iframe
+              title="Google Maps Location for Bajrang Fitness"
+              src={googleMapsLink}
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen={true}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              className="absolute inset-0 w-full h-full z-0 transition-opacity duration-700"
+            ></iframe>
+          ) : (
+             /* Subtle placeholder background pattern to keep UI looking premium while it loads */
+            <div className="absolute inset-0 flex items-center justify-center z-0 bg-[#050505]">
+                <div className="w-10 h-10 border-4 border-orange-600/30 border-t-orange-600 rounded-full animate-spin"></div>
+            </div>
+          )}
 
           {/* GET DIRECTIONS FLOATING BUTTON */}
           <a
