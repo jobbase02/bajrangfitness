@@ -2,7 +2,8 @@
 import React, { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Send, MapPin, Phone, ShieldCheck, Zap } from 'lucide-react';
+// Naye icons (Loader2, CheckCircle2) add kiye hain feedback ke liye
+import { Send, MapPin, Phone, ShieldCheck, Zap, Loader2, CheckCircle2 } from 'lucide-react';
 import Image from 'next/image';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
@@ -11,52 +12,122 @@ import Navbar from '../components/Navbar';
 const InquireForm = () => {
   const searchParams = useSearchParams();
   const planParam = searchParams.get('plan');
-  const [selectedPlan, setSelectedPlan] = useState('');
+  
+  // 1. Form Data ke liye State
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    plan: '',
+    goals: ''
+  });
+
+  // 2. Form Submission Status ke liye State
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
   // Auto-select plan from URL
   useEffect(() => {
     if (planParam) {
-      setSelectedPlan(planParam);
+      setFormData((prev) => ({ ...prev, plan: planParam }));
     }
   }, [planParam]);
 
-  return (
-    <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+  // Input change handler
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-      {/* Auto-Selected Plan Banner (Only shows if redirected from Plans) */}
+  // Submit Handler (API Call)
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus('loading');
+
+    try {
+      const response = await fetch('/api/inquire', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setStatus('success');
+        setFormData({ name: '', phone: '', plan: '', goals: '' }); // Form clear kar do
+      } else {
+        setStatus('error');
+      }
+    } catch (error) {
+      setStatus('error');
+    }
+  };
+
+  // Success Message UI (Original theme se match karta hua)
+  if (status === 'success') {
+    return (
+      <div className="bg-orange-600/10 border border-orange-500/30 p-10 text-center flex flex-col items-center gap-4">
+        <CheckCircle2 className="text-orange-500" size={48} />
+        <h3 className="text-2xl font-black uppercase text-white">Application Received</h3>
+        <p className="text-gray-400 font-bold uppercase text-xs tracking-widest">Our team will call you within 24 hours.</p>
+        <button onClick={() => setStatus('idle')} className="mt-4 text-orange-500 underline text-xs font-black uppercase">Submit Another</button>
+      </div>
+    );
+  }
+
+  return (
+    <form className="space-y-6" onSubmit={handleSubmit}>
+
+      {/* Auto-Selected Plan Banner */}
       {planParam && (
         <div className="bg-orange-600/10 border border-orange-500/30 p-4 flex items-center gap-3 mb-6">
           <ShieldCheck className="text-orange-500" size={24} />
           <div>
             <p className="text-[10px] font-black uppercase tracking-[0.2em] text-orange-500">Selected Plan</p>
-            <p className="text-white font-bold uppercase tracking-wide">{planParam} Membership</p>
+            <p className="text-white font-bold uppercase tracking-wide">
+              {planParam === 'FreeTrialPass' ? '1-DAY FREE TRIAL' : `${planParam} Membership`}
+            </p>
           </div>
+        </div>
+      )}
+
+      {/* Error Message */}
+      {status === 'error' && (
+        <div className="bg-red-500/10 border border-red-500/50 p-4 text-red-500 font-bold text-xs uppercase tracking-wider text-center">
+          Something went wrong. Please try again.
         </div>
       )}
 
       <div className="grid md:grid-cols-2 gap-6">
         <input
           type="text"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
           placeholder="FULL NAME"
           required
-          className="w-full bg-[#050505] border-2 border-white/10 p-5 focus:border-orange-500 outline-none font-bold text-white transition-colors uppercase placeholder:text-gray-700 hover:border-white/20"
+          disabled={status === 'loading'}
+          className="w-full bg-[#050505] border-2 border-white/10 p-5 focus:border-orange-500 outline-none font-bold text-white transition-colors uppercase placeholder:text-gray-700 hover:border-white/20 disabled:opacity-50"
         />
         <input
           type="tel"
+          name="phone"
+          value={formData.phone}
+          onChange={handleChange}
           placeholder="PHONE NUMBER"
           required
-          className="w-full bg-[#050505] border-2 border-white/10 p-5 focus:border-orange-500 outline-none font-bold text-white transition-colors uppercase placeholder:text-gray-700 hover:border-white/20"
+          disabled={status === 'loading'}
+          className="w-full bg-[#050505] border-2 border-white/10 p-5 focus:border-orange-500 outline-none font-bold text-white transition-colors uppercase placeholder:text-gray-700 hover:border-white/20 disabled:opacity-50"
         />
       </div>
 
       <div className="relative">
         <select
-          value={selectedPlan}
-          onChange={(e) => setSelectedPlan(e.target.value)}
+          name="plan"
+          value={formData.plan}
+          onChange={handleChange}
           required
-          className="w-full bg-[#050505] border-2 border-white/10 p-5 focus:border-orange-500 outline-none font-bold text-white transition-colors uppercase cursor-pointer appearance-none hover:border-white/20"
+          disabled={status === 'loading'}
+          className="w-full bg-[#050505] border-2 border-white/10 p-5 focus:border-orange-500 outline-none font-bold text-white transition-colors uppercase cursor-pointer appearance-none hover:border-white/20 disabled:opacity-50"
         >
           <option value="" disabled className="text-gray-600">-- SELECT YOUR MEMBERSHIP PLAN --</option>
+          <option value="FreeTrialPass">FREE TRIAL PASS (1 DAY)</option>
           <option value="Starter">STARTER (1 MONTH)</option>
           <option value="Quarterly">QUARTERLY (3 MONTHS) - MOST POPULAR</option>
           <option value="Half Yearly">HALF YEARLY (6 MONTHS)</option>
@@ -69,16 +140,25 @@ const InquireForm = () => {
       </div>
 
       <textarea
+        name="goals"
+        value={formData.goals}
+        onChange={handleChange}
         placeholder="ANY SPECIFIC GOALS OR PAST INJURIES? (OPTIONAL)"
         rows={3}
-        className="w-full bg-[#050505] border-2 border-white/10 p-5 focus:border-orange-500 outline-none font-bold text-white transition-colors uppercase resize-none placeholder:text-gray-700 hover:border-white/20"
+        disabled={status === 'loading'}
+        className="w-full bg-[#050505] border-2 border-white/10 p-5 focus:border-orange-500 outline-none font-bold text-white transition-colors uppercase resize-none placeholder:text-gray-700 hover:border-white/20 disabled:opacity-50"
       ></textarea>
 
       <button
         type="submit"
-        className="w-full bg-orange-600 py-6 text-black font-black uppercase tracking-widest hover:bg-white transition-all shadow-[8px_8px_0px_rgba(255,255,255,0.1)] hover:shadow-none flex items-center justify-center gap-3 group transform hover:translate-y-1 hover:translate-x-1"
+        disabled={status === 'loading'}
+        className="w-full bg-orange-600 py-6 text-black font-black uppercase tracking-widest hover:bg-white transition-all shadow-[8px_8px_0px_rgba(255,255,255,0.1)] hover:shadow-none flex items-center justify-center gap-3 group transform hover:translate-y-1 hover:translate-x-1 disabled:pointer-events-none disabled:opacity-80"
       >
-        Submit Registration <Send size={20} className="group-hover:translate-x-2 transition-transform" />
+        {status === 'loading' ? (
+          <>PROCESSING <Loader2 size={20} className="animate-spin" /></>
+        ) : (
+          <>Submit Registration <Send size={20} className="group-hover:translate-x-2 transition-transform" /></>
+        )}
       </button>
 
       <p className="text-[10px] text-gray-500 font-bold uppercase text-center mt-4 tracking-wider">

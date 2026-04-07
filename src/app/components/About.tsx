@@ -1,14 +1,76 @@
 "use client";
-import React, { useState, useEffect } from 'react';
-import { Dumbbell, Award, ArrowRight, ChevronLeft, ChevronRight, Target } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Dumbbell, Award, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 
+// =====================================================================
+// 🚀 SMART CAROUSEL VIDEO COMPONENT (Active-Only Playback)
+// =====================================================================
+const SmartCarouselVideo = ({ src, isActive }: { src: string, isActive: boolean }) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [shouldLoad, setShouldLoad] = useState(false);
+
+  // 1. Scroll Lazy Loading: Download only when the carousel is on screen
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setShouldLoad(true);
+          }
+        });
+      },
+      { rootMargin: '200px' } // Preload slightly before it comes into view
+    );
+
+    if (videoRef.current) observer.observe(videoRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  // 2. Smart Playback: Only play if it is the center (active) video
+  useEffect(() => {
+    if (!shouldLoad || !videoRef.current) return;
+
+    if (isActive) {
+      videoRef.current.play().catch(() => {});
+    } else {
+      videoRef.current.pause(); // Pause off-center videos to save RAM & CPU
+    }
+  }, [isActive, shouldLoad]);
+
+  // 3. Auto-Optimization & Thumbnail Generation
+  const optimizedSrc = src.includes('upload/v') 
+    ? src.replace('upload/v', 'upload/f_auto,q_auto/v') 
+    : src;
+  const posterSrc = optimizedSrc.replace('.mp4', '.jpg');
+
+  return (
+    <video
+      ref={videoRef}
+      loop
+      muted
+      playsInline
+      preload="none" // HUGE Bandwidth saver
+      disablePictureInPicture
+      controlsList="nodownload nofullscreen noremoteplayback"
+      poster={posterSrc}
+      className="w-full h-full object-cover bg-[#0a0a0a]"
+    >
+      {shouldLoad && <source src={optimizedSrc} type="video/mp4" />}
+    </video>
+  );
+};
+
+// =====================================================================
+// MAIN ABOUT COMPONENT
+// =====================================================================
 const About = () => {
   const videos = [
-    "/Video1.mp4",
-    "/Video2.mp4",
-    "/Video3.mp4"
+    "https://res.cloudinary.com/dvc0zrs3w/video/upload/v1775491727/new-video-1_gyjiso.mp4",
+    "https://res.cloudinary.com/dvc0zrs3w/video/upload/v1775491733/lmje1k8drwfxyw12ekb5.mp4",
+    "https://res.cloudinary.com/dvc0zrs3w/video/upload/v1775491718/AQPQGNhl1jn3bAbjylTnwn8w4nn3GWyXqS6IDp14rR0CY1Eo81tY6GQPWlL7DfgJFPwGWQI21V-Y2wmLzasX-nYmNpC5h6qP_kv0quv.mp4",
+    "https://res.cloudinary.com/dvc0zrs3w/video/upload/v1775491715/AQMk_sVbxL8R4ZIdDhltp9gloXJEqSVv4omZYL-B500DdN1q7NkJBYVVnnURxyDCFiYDzp1Q0HiL1Pw2ZARk3ghraLhaGoDf_dxvyes.mp4"
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -112,12 +174,12 @@ const About = () => {
             <div className="flex items-center gap-4">
               {/* Avatar */}
               <div className="w-14 h-14 rounded-full bg-orange-600 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-500">
-                <span className="text-white font-black text-xl tracking-wide">YN</span>
+                <span className="text-white font-black text-xl tracking-wide">SS</span>
               </div>
               {/* Name & Title */}
               <div className="flex flex-col">
                 <span className="text-white text-base">
-                  <span className="font-black">[Owner Name]</span> <span className="text-gray-400">— Owner</span>
+                  <span className="font-black">Shivraj Singh Supyal</span> <span className="text-gray-400">— Owner</span>
                 </span>
                 <span className="text-orange-500/80 font-bold text-xs uppercase tracking-widest mt-1">
                   Pilikothi Road · Haldwani
@@ -171,20 +233,13 @@ const About = () => {
                     }}
                     transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }} // Smooth Apple-like spring ease
                     onClick={() => !isActive && setCurrentIndex(index)}
+                    onContextMenu={(e) => e.preventDefault()} // Block right click for extra security
                   >
-                    <video
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      suppressHydrationWarning
-                      className="w-full h-full object-cover"
-                    >
-                      <source src={src} type="video/mp4" />
-                    </video>
+                    {/* Render the heavily optimized SmartCarouselVideo component */}
+                    <SmartCarouselVideo src={src} isActive={isActive} />
 
                     {/* Dark overlay for inactive videos */}
-                    {!isActive && <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />}
+                    {!isActive && <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] pointer-events-none" />}
                   </motion.div>
                 );
               })}

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import SmoothScroll from "./components/SmoothScroll";
+import FreeTrialPopup from "./components/TrialPopUp";
 
 // Variables for cleaner code
 const title = "Bajrang Fitness Best Gym in Haldwani | Fitness Center – Pilikothi Road";
@@ -46,6 +47,7 @@ export default function RootLayout({
         <SmoothScroll>
           {children}
         </SmoothScroll>
+        <FreeTrialPopup />
       </body>
     </html>
   );

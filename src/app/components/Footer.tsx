@@ -66,8 +66,19 @@ const Footer = () => {
                 <span className="group-hover:text-white transition-colors">Pilikothi Road, OPP primary school,<br/>Haldwani, Uttarakhand</span>
               </li>
               <li className="flex gap-4 items-center group">
+                {/* Icon will still scale when the whole line is hovered */}
                 <Phone className="text-orange-600 shrink-0 group-hover:scale-110 transition-transform" size={20} />
-                <a href="tel:+918445588806" className="group-hover:text-white transition-colors underline decoration-orange-600/30 underline-offset-4">+91 8445588806 / 7253008213</a>
+                
+                {/* Numbers are now handled individually for hover states */}
+                <div className="flex flex-wrap gap-1">
+                  <a href="tel:+918445588806" className="transition-colors hover:text-white underline decoration-orange-600/30 hover:decoration-orange-500 underline-offset-4">
+                    +91 8445588806
+                  </a>
+                  <span className="text-gray-500">,</span>
+                  <a href="tel:+917253008213" className="transition-colors hover:text-white underline decoration-orange-600/30 hover:decoration-orange-500 underline-offset-4">
+                    +91 7253008213
+                  </a>
+                </div>
               </li>
             </ul>
           </div>
@@ -79,11 +90,11 @@ const Footer = () => {
           
           {/* Eleven X Solutions Credit */}
           <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-600">
-            Developed By <a href="https://elevenxsolutions.com" target="_blank" rel="noreferrer" className="text-orange-500 hover:text-white transition-colors underline decoration-orange-600/50 underline-offset-4">elevenxsolutions.com</a>
+            Developed By <a href="https://elevenxsolutions.com" target="_blank" rel="noreferrer" className="text-orange-500 hover:text-white transition-colors underline decoration-orange-600/50 hover:decoration-orange-500 underline-offset-4">elevenxsolutions.com</a>
           </p>
           
           <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-600">
-            © 2026 Bajrang Fitness • All Rights Reserved
+            Bajrang Fitness
           </p>
         </div>
 

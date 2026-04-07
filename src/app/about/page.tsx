@@ -81,13 +81,17 @@ const AboutPage = () => {
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="relative h-[400px] md:h-[600px] border-l-8 border-orange-600 shadow-[20px_20px_0px_#111]"
+            className="relative h-[400px] md:h-[600px] border-l-8 border-orange-600 shadow-[20px_20px_0px_#111] overflow-hidden group"
+            onContextMenu={(e) => e.preventDefault()} // Block right-click
           >
+            {/* Anti-Download Invisible Shield */}
+            <div className="absolute inset-0 z-10 w-full h-full pointer-events-auto cursor-default" />
             <Image
-              src="https://images.unsplash.com/photo-1593079831268-3381b0db4a77?q=80&w=2069"
-              alt="Gym Interior"
+              src="/gallery/953612c6-0ce5-43bf-9238-31eab79a165a.jpeg"
+              alt="Bajrang Fitness Gym Interior in Haldwani" // SEO optimized alt text
               fill
-              className="object-cover transition-all duration-700"
+              draggable={false} // Block drag & drop
+              className="object-cover transition-all duration-700 pointer-events-none select-none group-hover:scale-105"
             />
           </motion.div>
         </div>

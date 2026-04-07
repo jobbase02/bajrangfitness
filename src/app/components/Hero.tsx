@@ -20,7 +20,7 @@ const Hero = () => {
             Whether you're a man or a woman, a beginner or an athlete our gym is built for you. Expert trainers, great equipment and a community that keeps you going. <br /> — Pilikothi Road, Haldwani.
           </p>
           <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
-            <a href="/inquire" className="w-full md:w-auto bg-orange-600 text-black px-10 py-4 font-black uppercase text-lg shadow-[0_5px_15px_rgba(234,88,12,0.3)] hover:shadow-orange-500/50 hover:bg-white hover:-translate-y-1 transition-all duration-300">Start Free Trial</a>
+            <a href="/inquire?plan=FreeTrialPass" className="w-full md:w-auto bg-orange-600 text-black px-10 py-4 font-black uppercase text-lg shadow-[0_5px_15px_rgba(234,88,12,0.3)] hover:shadow-orange-500/50 hover:bg-white hover:-translate-y-1 transition-all duration-300">Start Free Trial</a>
             <a href="/#plans" className="w-full md:w-auto border border-white/20 px-10 py-4 font-black uppercase text-lg backdrop-blur-sm hover:border-orange-500 hover:text-orange-500 hover:-translate-y-1 transition-all duration-300 bg-black/30">View Membership Plans</a>
           </div>
         </motion.div>
