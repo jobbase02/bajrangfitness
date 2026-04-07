@@ -14,10 +14,10 @@ const Hero = () => {
         <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-black/40 to-black/60 z-10" />
         <Image 
           src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070" 
-          alt="" // Decorative image ke liye alt hamesha khali hona chahiye
+          alt="Hero image" // Decorative image ke liye alt hamesha khali hona chahiye
           fill 
           className="object-cover opacity-40 grayscale" 
-          priority 
+          priority={true}
         />
       </div>
 

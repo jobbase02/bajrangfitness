@@ -34,21 +34,16 @@ const SmartCarouselVideo = ({ src, isActive }: { src: string, isActive: boolean 
 
   return (
     <div ref={containerRef} className="w-full h-full relative bg-[#0a0a0a]">
-      {/* 
-        Always render an optimized poster. This allows us to fully destroy the video element 
-        when not active without creating transparent dead zones! 
+      {/* A11Y FIX: Added aria-hidden="true" and empty alt tag because this is purely a decorative 
+        background poster. Screen readers shouldn't announce it repeatedly.
       */}
       <img
         src={posterSrc}
-        alt="Gym Thumbnail"
+        alt=""
+        aria-hidden="true"
         className="w-full h-full object-cover absolute inset-0 pointer-events-none"
       />
 
-      {/* 
-        Massive Optimization: ONLY mount the actual <video> tag if it's currently the active 
-        viewport item. This frees up 75% of the browser's hardware decoding buffer and RAM,
-        making scrolling buttery smooth.
-      */}
       {hasEnteredView && isActive && (
         <video
           loop
@@ -93,20 +88,16 @@ const About = () => {
 
   const getPositionStyles = (index: number) => {
     if (index === currentIndex) {
-
       return { x: "0%", scale: 1, rotateZ: 0, zIndex: 30, opacity: 1 };
     } else if (index === (currentIndex - 1 + videos.length) % videos.length) {
-
       return { x: "-45%", scale: 0.85, rotateZ: -6, zIndex: 10, opacity: 0.5 };
     } else {
-
       return { x: "45%", scale: 0.85, rotateZ: 6, zIndex: 10, opacity: 0.5 };
     }
   };
 
   return (
     <section id="about" className="py-24 px-4 md:px-8 max-w-7xl mx-auto border-t border-white/5 bg-[#050505] overflow-hidden">
-
       <div className="mb-14">
         <h2 className="text-orange-500 font-black tracking-widest uppercase text-sm mb-2 italic">Our Story — Rooted in Haldwani</h2>
         <h3 className="text-5xl md:text-6xl font-black uppercase text-white tracking-tighter">
@@ -117,13 +108,11 @@ const About = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-
         <div className="lg:col-span-5 flex flex-col gap-5 h-full justify-center">
-
           <div className="bg-zinc-900/40 p-8 rounded-3xl border border-white/5 relative group overflow-hidden">
-
-            {/* Replaced heavy blur filter with a lightweight hardware-friendly radial gradient for the identical glow */}
+            {/* A11Y FIX: aria-hidden for purely visual glow */}
             <div
+              aria-hidden="true"
               className="hidden md:block absolute top-0 right-0 w-64 h-64 -mr-20 -mt-20 pointer-events-none"
               style={{ background: 'radial-gradient(circle, rgba(234,88,12,0.1) 0%, transparent 70%)' }}
             />
@@ -139,39 +128,38 @@ const About = () => {
                 </div>
               </div>
 
+              {/* A11Y FIX: Added focus-visible for keyboard nav */}
               <Link
                 href="/about"
-                className="hidden md:inline-flex mt-6 items-center gap-2 px-4 py-2 bg-orange-500/10 text-orange-500 hover:bg-orange-600 hover:text-white rounded-full transition-all group tracking-widest text-[10px] font-black"
+                className="hidden md:inline-flex mt-6 items-center gap-2 px-4 py-2 bg-orange-500/10 text-orange-500 hover:bg-orange-600 hover:text-white rounded-full transition-all group tracking-widest text-[10px] font-black focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
               >
                 KNOW MORE
-                <ArrowRight size={14} className="transform transition-transform group-hover:translate-x-1" />
+                <ArrowRight size={14} aria-hidden="true" className="transform transition-transform group-hover:translate-x-1" />
               </Link>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-5">
-
             <div className="bg-zinc-900 border border-white/5 p-6 rounded-3xl hover:border-orange-500/50 transition-colors duration-300 group">
-              <Dumbbell className="text-orange-500 mb-4 group-hover:scale-110 transition-transform duration-500" size={32} strokeWidth={1.5} />
+              <Dumbbell aria-hidden="true" className="text-orange-500 mb-4 group-hover:scale-110 transition-transform duration-500" size={32} strokeWidth={1.5} />
               <h3 className="text-white font-black uppercase text-sm md:text-base mb-1">Top-Notch Gear</h3>
               <p className="text-gray-500 font-bold text-[10px] uppercase tracking-widest">Imported Biomechanics</p>
             </div>
 
             <div className="bg-zinc-900 border border-white/5 p-6 rounded-3xl hover:border-orange-500/50 transition-colors duration-300 group">
-              <Award className="text-orange-500 mb-4 group-hover:scale-110 transition-transform duration-500" size={32} strokeWidth={1.5} />
+              <Award aria-hidden="true" className="text-orange-500 mb-4 group-hover:scale-110 transition-transform duration-500" size={32} strokeWidth={1.5} />
               <h3 className="text-white font-black uppercase text-sm md:text-base mb-1">Expert Coaches</h3>
               <p className="text-gray-500 font-bold text-[10px] uppercase tracking-widest">5+ Years Experience</p>
             </div>
           </div>
-
 
           <div className="bg-zinc-900 rounded-r-3xl rounded-l-md border border-white/5 border-l-[4px] border-l-orange-500 p-6 lg:p-7 relative group shadow-xl my-2 hover:border-orange-500/50 transition-colors duration-300">
             <p className="text-gray-300 font-serif italic text-lg lg:text-xl leading-relaxed mb-6">
               "We wanted to build a gym where people walk in nervous and leave feeling like they belong. That's what we have created here in Haldwani, <span className='text-orange-500'>a home for fitness.</span>"
             </p>
             <div className="flex items-center gap-4">
-
-              <div className="w-14 h-14 rounded-full bg-orange-600 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-500">
+              {/* A11Y FIX: aria-hidden to decorative initials */}
+              <div aria-hidden="true" className="w-14 h-14 rounded-full bg-orange-600 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-500">
                 <span className="text-white font-black text-xl tracking-wide">SS</span>
               </div>
 
@@ -185,31 +173,30 @@ const About = () => {
               </div>
             </div>
           </div>
-
         </div>
-
 
         <div
           className="lg:col-span-7 relative h-[500px] md:h-[650px] w-full flex items-center justify-center"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-
-
+          {/* A11Y FIX: aria-label added for screen readers & focus-visible for keyboard users */}
           <button
             onClick={handlePrev}
-            className="absolute left-0 md:-left-2 z-40 bg-black/60 hover:bg-orange-600 text-white p-3 md:p-4 rounded-full border border-white/10 backdrop-blur-md transition-all transform hover:scale-110"
+            aria-label="Previous Video"
+            className="absolute left-0 md:-left-2 z-40 bg-black/60 hover:bg-orange-600 text-white p-3 md:p-4 rounded-full border border-white/10 backdrop-blur-md transition-all transform hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
           >
-            <ChevronLeft size={24} />
+            <ChevronLeft size={24} aria-hidden="true" />
           </button>
 
+          {/* A11Y FIX: aria-label added for screen readers & focus-visible for keyboard users */}
           <button
             onClick={handleNext}
-            className="absolute right-0 md:-right-2 z-40 bg-black/60 hover:bg-orange-600 text-white p-3 md:p-4 rounded-full border border-white/10 backdrop-blur-md transition-all transform hover:scale-110"
+            aria-label="Next Video"
+            className="absolute right-0 md:-right-2 z-40 bg-black/60 hover:bg-orange-600 text-white p-3 md:p-4 rounded-full border border-white/10 backdrop-blur-md transition-all transform hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
           >
-            <ChevronRight size={24} />
+            <ChevronRight size={24} aria-hidden="true" />
           </button>
-
 
           <div className="relative w-[260px] md:w-[320px] h-[460px] md:h-[560px] flex items-center justify-center">
             <AnimatePresence initial={false}>
@@ -220,7 +207,18 @@ const About = () => {
                 return (
                   <motion.div
                     key={index}
-                    className={`absolute top-0 w-full h-full rounded-3xl overflow-hidden border border-white/10 will-change-transform ${isActive ? 'shadow-2xl shadow-orange-500/20 border-orange-500/50' : 'cursor-pointer'}`}
+                    // A11Y FIX: Made slides behave like buttons so keyboard users can select them
+                    role="button"
+                    tabIndex={isActive ? -1 : 0}
+                    aria-label={isActive ? `Currently playing video ${index + 1}` : `Play video ${index + 1}`}
+                    aria-current={isActive ? "true" : "false"}
+                    onKeyDown={(e) => {
+                      if (!isActive && (e.key === 'Enter' || e.key === ' ')) {
+                        e.preventDefault();
+                        setCurrentIndex(index);
+                      }
+                    }}
+                    className={`absolute top-0 w-full h-full rounded-3xl overflow-hidden border border-white/10 will-change-transform focus:outline-none focus-visible:ring-4 focus-visible:ring-orange-500 ${isActive ? 'shadow-2xl shadow-orange-500/20 border-orange-500/50' : 'cursor-pointer'}`}
                     animate={{
                       x: styles.x,
                       scale: styles.scale,
@@ -232,18 +230,14 @@ const About = () => {
                     onClick={() => !isActive && setCurrentIndex(index)}
                     onContextMenu={(e) => e.preventDefault()}
                   >
-
                     <SmartCarouselVideo src={src} isActive={isActive} />
-
                     <div className={`absolute inset-0 bg-black/60 pointer-events-none transition-opacity duration-300 ${isActive ? 'opacity-0' : 'opacity-100'}`} />
                   </motion.div>
                 );
               })}
             </AnimatePresence>
           </div>
-
         </div>
-
       </div>
     </section>
   );
