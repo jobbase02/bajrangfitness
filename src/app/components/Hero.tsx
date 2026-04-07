@@ -18,6 +18,7 @@ const Hero = () => {
           fill 
           className="object-cover opacity-40 grayscale" 
           priority={true}
+          fetchPriority="high"
         />
       </div>
 
