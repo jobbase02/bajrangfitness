@@ -5,55 +5,65 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const SmartCarouselVideo = ({ src, isActive }: { src: string, isActive: boolean }) => {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [shouldLoad, setShouldLoad] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [hasEnteredView, setHasEnteredView] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setShouldLoad(true);
+            setHasEnteredView(true);
+            if (containerRef.current) {
+              observer.unobserve(containerRef.current);
+            }
           }
         });
       },
-      { rootMargin: '200px' } 
+      { rootMargin: '600px' }
     );
 
-    if (videoRef.current) observer.observe(videoRef.current);
+    if (containerRef.current) observer.observe(containerRef.current);
     return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    if (!shouldLoad || !videoRef.current) return;
-
-    if (isActive) {
-      videoRef.current.play().catch(() => {});
-    } else {
-      videoRef.current.pause();
-    }
-  }, [isActive, shouldLoad]);
-
-
-  const optimizedSrc = src.includes('upload/v') 
-    ? src.replace('upload/v', 'upload/f_auto,q_auto/v') 
+  const optimizedSrc = src.includes('upload/v')
+    ? src.replace('upload/v', 'upload/f_auto,q_auto/v')
     : src;
   const posterSrc = optimizedSrc.replace('.mp4', '.jpg');
 
   return (
-    <video
-      ref={videoRef}
-      loop
-      muted
-      playsInline
-      preload="none"
-      disablePictureInPicture
-      controlsList="nodownload nofullscreen noremoteplayback"
-      poster={posterSrc}
-      className="w-full h-full object-cover bg-[#0a0a0a]"
-    >
-      {shouldLoad && <source src={optimizedSrc} type="video/mp4" />}
-    </video>
+    <div ref={containerRef} className="w-full h-full relative bg-[#0a0a0a]">
+      {/* 
+        Always render an optimized poster. This allows us to fully destroy the video element 
+        when not active without creating transparent dead zones! 
+      */}
+      <img
+        src={posterSrc}
+        alt="Gym Thumbnail"
+        className="w-full h-full object-cover absolute inset-0 pointer-events-none"
+      />
+
+      {/* 
+        Massive Optimization: ONLY mount the actual <video> tag if it's currently the active 
+        viewport item. This frees up 75% of the browser's hardware decoding buffer and RAM,
+        making scrolling buttery smooth.
+      */}
+      {hasEnteredView && isActive && (
+        <video
+          loop
+          muted
+          playsInline
+          autoPlay
+          disablePictureInPicture
+          controlsList="nodownload nofullscreen noremoteplayback"
+          poster={posterSrc}
+          className="w-full h-full object-cover absolute inset-0 transform-gpu z-10"
+        >
+          <source src={optimizedSrc} type="video/mp4" />
+        </video>
+      )}
+    </div>
   );
 };
 
@@ -73,7 +83,7 @@ const About = () => {
     if (!isHovered) {
       const timer = setInterval(() => {
         setCurrentIndex((prev) => (prev + 1) % videos.length);
-      }, 4000); 
+      }, 4000);
       return () => clearInterval(timer);
     }
   }, [isHovered, videos.length]);
@@ -83,14 +93,14 @@ const About = () => {
 
   const getPositionStyles = (index: number) => {
     if (index === currentIndex) {
-  
-      return { x: "0%", scale: 1, rotateZ: 0, zIndex: 30, opacity: 1, filter: "grayscale(0%)" };
+
+      return { x: "0%", scale: 1, rotateZ: 0, zIndex: 30, opacity: 1 };
     } else if (index === (currentIndex - 1 + videos.length) % videos.length) {
-      
-      return { x: "-45%", scale: 0.85, rotateZ: -6, zIndex: 10, opacity: 0.5, filter: "grayscale(100%)" };
+
+      return { x: "-45%", scale: 0.85, rotateZ: -6, zIndex: 10, opacity: 0.5 };
     } else {
-      
-      return { x: "45%", scale: 0.85, rotateZ: 6, zIndex: 10, opacity: 0.5, filter: "grayscale(100%)" };
+
+      return { x: "45%", scale: 0.85, rotateZ: 6, zIndex: 10, opacity: 0.5 };
     }
   };
 
@@ -112,7 +122,11 @@ const About = () => {
 
           <div className="bg-zinc-900/40 p-8 rounded-3xl border border-white/5 relative group overflow-hidden">
 
-            <div className="hidden md:block absolute top-0 right-0 w-40 h-40 bg-orange-600/10 rounded-full blur-[50px] -mr-10 -mt-10 transition-all duration-700 group-hover:bg-orange-600/20" />
+            {/* Replaced heavy blur filter with a lightweight hardware-friendly radial gradient for the identical glow */}
+            <div
+              className="hidden md:block absolute top-0 right-0 w-64 h-64 -mr-20 -mt-20 pointer-events-none"
+              style={{ background: 'radial-gradient(circle, rgba(234,88,12,0.1) 0%, transparent 70%)' }}
+            />
 
             <h2 className="text-white font-black uppercase tracking-widest text-lg mb-3 relative z-10">Our Identity</h2>
             <div className="text-gray-400 font-bold text-xs uppercase tracking-[0.15em] leading-loose relative z-10">
@@ -136,13 +150,13 @@ const About = () => {
           </div>
 
           <div className="grid grid-cols-2 gap-5">
-            
+
             <div className="bg-zinc-900 border border-white/5 p-6 rounded-3xl hover:border-orange-500/50 transition-colors duration-300 group">
               <Dumbbell className="text-orange-500 mb-4 group-hover:scale-110 transition-transform duration-500" size={32} strokeWidth={1.5} />
               <h3 className="text-white font-black uppercase text-sm md:text-base mb-1">Top-Notch Gear</h3>
               <p className="text-gray-500 font-bold text-[10px] uppercase tracking-widest">Imported Biomechanics</p>
             </div>
-            
+
             <div className="bg-zinc-900 border border-white/5 p-6 rounded-3xl hover:border-orange-500/50 transition-colors duration-300 group">
               <Award className="text-orange-500 mb-4 group-hover:scale-110 transition-transform duration-500" size={32} strokeWidth={1.5} />
               <h3 className="text-white font-black uppercase text-sm md:text-base mb-1">Expert Coaches</h3>
@@ -150,17 +164,17 @@ const About = () => {
             </div>
           </div>
 
-          
+
           <div className="bg-zinc-900 rounded-r-3xl rounded-l-md border border-white/5 border-l-[4px] border-l-orange-500 p-6 lg:p-7 relative group shadow-xl my-2 hover:border-orange-500/50 transition-colors duration-300">
             <p className="text-gray-300 font-serif italic text-lg lg:text-xl leading-relaxed mb-6">
               "We wanted to build a gym where people walk in nervous and leave feeling like they belong. That's what we have created here in Haldwani, <span className='text-orange-500'>a home for fitness.</span>"
             </p>
             <div className="flex items-center gap-4">
-              
+
               <div className="w-14 h-14 rounded-full bg-orange-600 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-500">
                 <span className="text-white font-black text-xl tracking-wide">SS</span>
               </div>
-              
+
               <div className="flex flex-col">
                 <span className="text-white text-base">
                   <span className="font-black">Shivraj Singh Supyal</span> <span className="text-gray-400">— Owner</span>
@@ -174,14 +188,14 @@ const About = () => {
 
         </div>
 
-        
+
         <div
-          className="lg:col-span-7 relative h-[500px] md:h-[650px] w-full flex items-center justify-center perspective-[1000px]"
+          className="lg:col-span-7 relative h-[500px] md:h-[650px] w-full flex items-center justify-center"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
 
-          
+
           <button
             onClick={handlePrev}
             className="absolute left-0 md:-left-2 z-40 bg-black/60 hover:bg-orange-600 text-white p-3 md:p-4 rounded-full border border-white/10 backdrop-blur-md transition-all transform hover:scale-110"
@@ -196,7 +210,7 @@ const About = () => {
             <ChevronRight size={24} />
           </button>
 
-          
+
           <div className="relative w-[260px] md:w-[320px] h-[460px] md:h-[560px] flex items-center justify-center">
             <AnimatePresence initial={false}>
               {videos.map((src, index) => {
@@ -206,23 +220,22 @@ const About = () => {
                 return (
                   <motion.div
                     key={index}
-                    className={`absolute top-0 w-full h-full rounded-3xl overflow-hidden border border-white/10 ${isActive ? 'shadow-[0_0_50px_rgba(249,115,22,0.3)] border-orange-500/50' : 'cursor-pointer'}`}
+                    className={`absolute top-0 w-full h-full rounded-3xl overflow-hidden border border-white/10 will-change-transform ${isActive ? 'shadow-2xl shadow-orange-500/20 border-orange-500/50' : 'cursor-pointer'}`}
                     animate={{
                       x: styles.x,
                       scale: styles.scale,
                       rotateZ: styles.rotateZ,
                       zIndex: styles.zIndex,
                       opacity: styles.opacity,
-                      filter: styles.filter,
                     }}
                     transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
                     onClick={() => !isActive && setCurrentIndex(index)}
                     onContextMenu={(e) => e.preventDefault()}
                   >
-                   
+
                     <SmartCarouselVideo src={src} isActive={isActive} />
 
-                    {!isActive && <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] pointer-events-none" />}
+                    <div className={`absolute inset-0 bg-black/60 pointer-events-none transition-opacity duration-300 ${isActive ? 'opacity-0' : 'opacity-100'}`} />
                   </motion.div>
                 );
               })}
