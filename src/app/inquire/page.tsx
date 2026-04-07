@@ -2,18 +2,15 @@
 import React, { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
-// Naye icons (Loader2, CheckCircle2) add kiye hain feedback ke liye
 import { Send, MapPin, Phone, ShieldCheck, Zap, Loader2, CheckCircle2 } from 'lucide-react';
 import Image from 'next/image';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 
-// Form Component (Separated to safely use useSearchParams with Suspense)
 const InquireForm = () => {
   const searchParams = useSearchParams();
   const planParam = searchParams.get('plan');
   
-  // 1. Form Data ke liye State
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -21,22 +18,18 @@ const InquireForm = () => {
     goals: ''
   });
 
-  // 2. Form Submission Status ke liye State
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
-  // Auto-select plan from URL
   useEffect(() => {
     if (planParam) {
       setFormData((prev) => ({ ...prev, plan: planParam }));
     }
   }, [planParam]);
 
-  // Input change handler
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Submit Handler (API Call)
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('loading');
@@ -50,7 +43,7 @@ const InquireForm = () => {
 
       if (response.ok) {
         setStatus('success');
-        setFormData({ name: '', phone: '', plan: '', goals: '' }); // Form clear kar do
+        setFormData({ name: '', phone: '', plan: '', goals: '' });
       } else {
         setStatus('error');
       }
@@ -59,7 +52,6 @@ const InquireForm = () => {
     }
   };
 
-  // Success Message UI (Original theme se match karta hua)
   if (status === 'success') {
     return (
       <div className="bg-orange-600/10 border border-orange-500/30 p-10 text-center flex flex-col items-center gap-4">
@@ -74,7 +66,6 @@ const InquireForm = () => {
   return (
     <form className="space-y-6" onSubmit={handleSubmit}>
 
-      {/* Auto-Selected Plan Banner */}
       {planParam && (
         <div className="bg-orange-600/10 border border-orange-500/30 p-4 flex items-center gap-3 mb-6">
           <ShieldCheck className="text-orange-500" size={24} />
@@ -87,7 +78,6 @@ const InquireForm = () => {
         </div>
       )}
 
-      {/* Error Message */}
       {status === 'error' && (
         <div className="bg-red-500/10 border border-red-500/50 p-4 text-red-500 font-bold text-xs uppercase tracking-wider text-center">
           Something went wrong. Please try again.
@@ -133,7 +123,7 @@ const InquireForm = () => {
           <option value="Half Yearly">HALF YEARLY (6 MONTHS)</option>
           <option value="Annual Elite">ANNUAL ELITE (12 MONTHS)</option>
         </select>
-        {/* Custom Dropdown Arrow */}
+
         <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-orange-500">
           ▼
         </div>
@@ -174,7 +164,7 @@ const InquirePage = () => {
       <Navbar />
 
       <section className="pt-40 pb-24 px-4 min-h-screen flex items-center border-b border-white/5 relative overflow-hidden">
-        {/* Background Texture */}
+
         <div className="absolute inset-0 z-0 opacity-10">
           <Image src="https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=2069" alt="Texture" fill className="object-cover grayscale" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-[#050505]/90 to-transparent" />
@@ -182,7 +172,6 @@ const InquirePage = () => {
 
         <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-16 items-center relative z-10">
 
-          {/* LEFT SIDE: Typography & Info */}
           <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }}>
             <div className="flex items-center gap-2 text-orange-500 mb-6 font-black uppercase text-xs tracking-[0.3em]">
               <Zap size={16} fill="currentColor" /> Application Form
@@ -216,10 +205,9 @@ const InquirePage = () => {
             </div>
           </motion.div>
 
-          {/* RIGHT SIDE: The Form Box */}
           <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.2 }}>
             <div className="bg-zinc-900 border border-white/10 p-8 md:p-12 relative overflow-hidden shadow-2xl">
-              {/* Top Accent Line */}
+
               <div className="absolute top-0 left-0 w-full h-2 bg-orange-600" />
 
               <h3 className="text-3xl font-black uppercase italic text-white mb-8">Join The <span className="text-orange-500">Tribe</span></h3>

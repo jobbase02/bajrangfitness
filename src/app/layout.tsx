@@ -3,7 +3,6 @@ import "./globals.css";
 import SmoothScroll from "./components/SmoothScroll";
 import FreeTrialPopup from "./components/TrialPopUp";
 
-// Variables for cleaner code
 const title = "Bajrang Fitness Best Gym in Haldwani | Fitness Center – Pilikothi Road";
 const description = "Join the best gym in Haldwani on Pilikothi Road. Expert personal trainers, modern equipment, weight loss & bodybuilding programs. Start your fitness journey today!";
 
@@ -13,12 +12,12 @@ export const metadata: Metadata = {
   openGraph: {
     title: title,
     description: description,
-    url: 'https://bajrangfitness.com', // Aapni actual domain se replace kar lena baad mein
+    url: 'https://bajrangfitness.com',
     siteName: 'Bajrang Fitness',
     images: [
       {
-        url: '/og.jpeg', // Ye automatically public folder se og.jpeg uthayega
-        width: 1200,    // Standard size for WhatsApp/FB sharing
+        url: '/og.jpeg',
+        width: 1200,
         height: 630,
         alt: 'Bajrang Fitness Arena',
       },
@@ -27,7 +26,7 @@ export const metadata: Metadata = {
     type: 'website',
   },
   twitter: {
-    card: 'summary_large_image', // Bada image preview ke liye
+    card: 'summary_large_image',
     title: title,
     description: description,
     images: ['/og.jpeg'],

@@ -1,44 +1,39 @@
 "use client";
-import React, { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Play, Instagram, Dumbbell, Flame, Zap } from 'lucide-react';
+import { Instagram, Dumbbell, Flame, Zap } from 'lucide-react';
 import Image from 'next/image';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 
-// =====================================================================
-// 🚀 SMART VIDEO COMPONENT (Ultra-Optimized for Bandwidth & Caching)
-// =====================================================================
 const SmartVideo = ({ src }: { src: string }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [shouldLoad, setShouldLoad] = useState(false);
 
   useEffect(() => {
-    // Intersection Observer: Only play and download when visible on screen
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setShouldLoad(true); // Trigger download only when close to viewport
-            videoRef.current?.play().catch(() => {}); // Auto-play when in view
+            setShouldLoad(true); 
+            videoRef.current?.play().catch(() => {});
           } else {
-            videoRef.current?.pause(); // Pause when off-screen to save RAM/CPU
+            videoRef.current?.pause();
           }
         });
       },
-      { rootMargin: '200px' } // Load slightly before it comes into view
+      { rootMargin: '200px' }
     );
 
     if (videoRef.current) observer.observe(videoRef.current);
     return () => observer.disconnect();
   }, []);
 
-  // Automatically inject Cloudinary compression if missing
   const optimizedSrc = src.includes('upload/v') 
     ? src.replace('upload/v', 'upload/f_auto,q_auto/v') 
     : src;
-    
-  // Automatically generate a thumbnail image from the video URL
+  
   const posterSrc = optimizedSrc.replace('.mp4', '.jpg');
 
   return (
@@ -47,29 +42,24 @@ const SmartVideo = ({ src }: { src: string }) => {
       loop
       muted
       playsInline
-      preload="none" // HUGE Bandwidth saver: Don't preload data
+      preload="none"
       disablePictureInPicture
       controlsList="nodownload nofullscreen noremoteplayback"
-      poster={posterSrc} // Fixes the blank/peeling UI issue
+      poster={posterSrc}
       className="block w-full h-auto object-cover group-hover:scale-105 transition-all duration-700 pointer-events-none select-none bg-[#0a0a0a]"
     >
-      {/* Only attach the source file if the user scrolls near it */}
       {shouldLoad && <source src={optimizedSrc} type="video/mp4" />}
     </video>
   );
 };
 
-// =====================================================================
-// MAIN PAGE COMPONENT
-// =====================================================================
 const GalleryPage = () => {
   return (
     <main className="bg-[#050505] min-h-screen selection:bg-orange-600">
       <Navbar />
 
-      {/* --- HERO SECTION --- */}
       <section className="relative pt-30 md:pt-48 md:pb-20 px-4 border-b border-white/5 overflow-hidden">
-        {/* NEW: Background Blurred Image Effect */}
+        
         <div className="absolute inset-0 z-0 pointer-events-none">
           <Image 
             src="/gallery/953612c6-0ce5-43bf-9238-31eab79a165a.jpeg" 
@@ -77,7 +67,7 @@ const GalleryPage = () => {
             fill 
             className="object-cover opacity-[1] grayscale blur-md"
           />
-          {/* Gradient fade so it blends into the bottom flawlessly */}
+          
           <div className="absolute inset-0 bg-gradient-to-b from-[#050505]/40 via-[#050505]/80 to-[#050505]" />
         </div>
 
@@ -95,11 +85,9 @@ const GalleryPage = () => {
         </div>
       </section>
 
-      {/* --- FLAWLESS DYNAMIC MASONRY GRID --- */}
       <section className="pt-24 pb-12 px-4 md:px-8 max-w-7xl mx-auto">
         <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
 
-          {/* 1. THE BRAND TEXT BLOCK (Top First Column) */}
           <motion.div
             initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
             className="break-inside-avoid relative mb-6 bg-gradient-to-br from-orange-500 to-orange-600 border border-orange-400/30 rounded-3xl overflow-hidden flex flex-col items-center justify-center p-8 text-center shadow-[inset_0_0_40px_rgba(0,0,0,0.4)] min-h-[370px] group"
@@ -110,7 +98,6 @@ const GalleryPage = () => {
             <div className="absolute bottom-4 right-4 opacity-20 text-black"><Dumbbell size={64} /></div>
           </motion.div>
 
-          {/* 2. DYNAMIC MEDIA LOOP */}
           {[
             { type: "video", src: "https://res.cloudinary.com/dvc0zrs3w/video/upload/v1775491735/zbwnb6ol6iidbvpl7ssq.mp4" },
             { type: "video", src: "https://res.cloudinary.com/dvc0zrs3w/video/upload/v1775491733/lmje1k8drwfxyw12ekb5.mp4" },
@@ -137,7 +124,6 @@ const GalleryPage = () => {
               <div className="absolute inset-0 z-20 shadow-[inset_0_0_60px_rgba(0,0,0,0.9)] pointer-events-none rounded-3xl" />
               <div className="absolute inset-0 z-30 w-full h-full pointer-events-auto cursor-default" onContextMenu={(e) => e.preventDefault()} />
 
-              {/* Render the heavily optimized SmartVideo component or the standard Image */}
               {item.type === "video" ? (
                 <SmartVideo src={item.src} />
               ) : (
@@ -154,7 +140,6 @@ const GalleryPage = () => {
         </div>
       </section>
 
-      {/* --- BOTTOM CTA (Sharp Boxed Theme with Icon Overlay) --- */}
       <section className="pb-24 pt-12 px-4 max-w-5xl mx-auto">
         <motion.div 
           initial={{ opacity: 0, y: 20 }} 
@@ -162,7 +147,7 @@ const GalleryPage = () => {
           viewport={{ once: true }} 
           className="relative bg-orange-600 p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-8 overflow-hidden"
         >
-          {/* Subtle Instagram Icon Overlay Pattern */}
+
           <div className="absolute -inset-10 pointer-events-none z-0 flex flex-wrap gap-8 opacity-[0.08] items-center justify-center rotate-[-5deg]">
             {[...Array(20)].map((_, i) => (
               <Instagram key={i} size={80} className="text-black" />
