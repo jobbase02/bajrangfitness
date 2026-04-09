@@ -1,13 +1,24 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "./components/SmoothScroll";
 import FreeTrialPopup from "./components/TrialPopUp";
 import Chatbot from "./components/ChatBot";
 
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+});
+
 const title = "Bajrang Fitness Best Gym in Haldwani | Fitness Center – Pilikothi Road";
 const description = "Join the best gym in Haldwani on Pilikothi Road. Expert personal trainers, modern equipment, weight loss & bodybuilding programs. Start your fitness journey today!";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://bajrangfitness.com"),
+  alternates: {
+    canonical: "/",
+  },
   title: title,
   description: description,
   openGraph: {
@@ -38,7 +49,7 @@ export const metadata: Metadata = {
 //business ke liye schema markup for better SEO and local search visibility
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "ExerciseGym", 
+  "@type": "ExerciseGym",
   "name": "Bajrang Fitness",
   "image": "https://bajrangfitness.com/logo.png",
   "description": "Best gym in Haldwani located at Pilikothi Road. We offer imported equipment, personal training, and a great fitness community.",
@@ -47,7 +58,7 @@ const jsonLd = {
   "telephone": [
     "+91-8445588806",
     "+91-7253008213"
-  ], 
+  ],
   "email": "fitnessbajrang5@gmail.com",
   "address": {
     "@type": "PostalAddress",
@@ -68,7 +79,7 @@ const jsonLd = {
       "dayOfWeek": [
         "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
       ],
-      "opens": "05:00", 
+      "opens": "05:00",
       "closes": "22:00"
     }
   ],
@@ -91,13 +102,12 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`antialiased`}
+        className={`${inter.variable} font-sans antialiased`}
       >
         <SmoothScroll>
           {children}
         </SmoothScroll>
         <FreeTrialPopup />
-        <Chatbot />
       </body>
     </html>
   );

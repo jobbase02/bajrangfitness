@@ -6,30 +6,28 @@ import { Phone, MapPin, Mail, Clock, Navigation } from 'lucide-react';
 const GOOGLE_MAPS_LINK = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3482.407080568569!2d79.50315847531162!3d29.211578375353486!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39a09b58061ef629%3A0xacf44c6ce888aefe!2sBAJRANG%20FITNESS!5e0!3m2!1sen!2sin!4v1773832097330!5m2!1sen!2sin";
 
 const Contact = () => {
-  // 1. Map loading state
+  // 1. Map loading states
   const [loadMap, setLoadMap] = useState(false);
+  const [iframeReady, setIframeReady] = useState(false);
   const mapRef = useRef<HTMLDivElement>(null);
 
-  // 2. Invisible Observer + Session Storage (The Ultimate Stealth Optimizer)
+  // 2. Invisible Observer to trigger network request
   useEffect(() => {
-    // OPTIMIZATION 2: Check karo ki current session mein map load ho chuka hai ya nahi
     const hasMapLoadedBefore = sessionStorage.getItem('bajrang_map_loaded');
 
     if (hasMapLoadedBefore) {
       setLoadMap(true);
-      return; // Agar pehle se load hai toh Observer banane ki zaroorat hi nahi (Saves CPU)
+      return;
     }
 
-    // Agar session mein first time hai, tabhi Observer lagao
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
           setLoadMap(true);
-          sessionStorage.setItem('bajrang_map_loaded', 'true'); // Memory mein save kar lo
-          observer.disconnect(); // Kaam hote hi turant disconnect taaki background memory free ho jaye
+          sessionStorage.setItem('bajrang_map_loaded', 'true');
+          observer.disconnect();
         }
       },
-      // 800px pehle hi load karna shuru kardo, taaki mobile users ko blank space na dikhe
       { rootMargin: '1200px' } 
     );
 
@@ -37,7 +35,6 @@ const Contact = () => {
       observer.observe(mapRef.current);
     }
 
-    // OPTIMIZATION 3: Strict Cleanup function taaki component unmount hone pe observer garbage collect ho jaye
     return () => observer.disconnect();
   }, []);
 
@@ -130,10 +127,21 @@ const Contact = () => {
           
           <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/80 via-black/40 to-transparent z-10 pointer-events-none" />
 
+          {/* Placeholder that fades out once iframe is FULLY ready */}
+          <div 
+            className={`absolute inset-0 flex flex-col items-center justify-center z-10 bg-[#0a0a0a] transition-opacity duration-1000 ${
+              iframeReady ? 'opacity-0 pointer-events-none' : 'opacity-100'
+            }`}
+            aria-hidden="true"
+          >
+             <div className="w-16 h-16 border-[3px] border-orange-600/20 border-t-orange-600 rounded-full animate-spin mb-4"></div>
+             <span className="text-gray-400 font-bold tracking-widest text-[10px] uppercase animate-pulse">Loading Map Coordinate...</span>
+          </div>
+
           {/* Conditional Rendering based on Scroll/SessionStorage */}
-          {loadMap ? (
+          {loadMap && (
             <iframe
-              title="Google Maps Location for Bajrang Fitness"
+              title="Google Maps Location for Bajrang Fitness in Haldwani"
               src={GOOGLE_MAPS_LINK}
               width="100%"
               height="100%"
@@ -141,13 +149,10 @@ const Contact = () => {
               allowFullScreen={true}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              className="absolute inset-0 w-full h-full z-0 transition-opacity duration-700 opacity-100"
+              onLoad={() => setIframeReady(true)}
+              aria-label="Interactive map showing the gym's location"
+              className="absolute inset-0 w-full h-full z-0"
             ></iframe>
-          ) : (
-             /* Placeholder Background pattern to keep UI looking premium while it loads or waits to be scrolled into view */
-            <div className="absolute inset-0 flex items-center justify-center z-0 bg-[#050505]">
-                <div className="w-10 h-10 border-4 border-orange-600/30 border-t-orange-600 rounded-full animate-spin"></div>
-            </div>
           )}
 
           {/* GET DIRECTIONS FLOATING BUTTON */}

@@ -1,6 +1,15 @@
 // app/api/chat/route.ts
 import { createGroq } from '@ai-sdk/groq';
 import { ModelMessage, streamText, UIMessage } from 'ai';
+import { Ratelimit } from '@upstash/ratelimit';
+import { Redis } from '@upstash/redis';
+
+// Create a new ratelimiter, that allows 10 requests per 1 m
+const ratelimit = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(10, '1 m'),
+  analytics: true,
+});
 
 const groq = createGroq({
   apiKey: process.env.GROQ_API_KEY,
@@ -55,6 +64,14 @@ SPECIAL RULES & ACTIONS:
 `;
 
 export async function POST(req: Request) {
+  // Extract IP for rate limiting
+  const ip = req.headers.get("x-forwarded-for") ?? req.headers.get("x-real-ip") ?? "anonymous";
+  const { success } = await ratelimit.limit(`chat_${ip}`);
+
+  if (!success) {
+    return new Response('Too many requests. Please try again later.', { status: 429 });
+  }
+
   const { messages }: { messages: UIMessage[] } = await req.json();
   
   // FIX APPLIED HERE: We cast the final array using "as ModelMessage[]"
