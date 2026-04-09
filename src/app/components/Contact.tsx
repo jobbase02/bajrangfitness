@@ -2,31 +2,42 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Phone, MapPin, Mail, Clock, Navigation } from 'lucide-react';
 
+// OPTIMIZATION 1: Static data ko component ke bahar rakha taaki har render pe dobara create na ho.
+const GOOGLE_MAPS_LINK = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3482.407080568569!2d79.50315847531162!3d29.211578375353486!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39a09b58061ef629%3A0xacf44c6ce888aefe!2sBAJRANG%20FITNESS!5e0!3m2!1sen!2sin!4v1773832097330!5m2!1sen!2sin";
+
 const Contact = () => {
-  const googleMapsLink = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3482.407080568569!2d79.50315847531162!3d29.211578375353486!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39a09b58061ef629%3A0xacf44c6ce888aefe!2sBAJRANG%20FITNESS!5e0!3m2!1sen!2sin!4v1773832097330!5m2!1sen!2sin";
-  
   // 1. Map loading state
   const [loadMap, setLoadMap] = useState(false);
   const mapRef = useRef<HTMLDivElement>(null);
 
-  // 2. Invisible Observer (The Stealth Optimizer)
+  // 2. Invisible Observer + Session Storage (The Ultimate Stealth Optimizer)
   useEffect(() => {
+    // OPTIMIZATION 2: Check karo ki current session mein map load ho chuka hai ya nahi
+    const hasMapLoadedBefore = sessionStorage.getItem('bajrang_map_loaded');
+
+    if (hasMapLoadedBefore) {
+      setLoadMap(true);
+      return; // Agar pehle se load hai toh Observer banane ki zaroorat hi nahi (Saves CPU)
+    }
+
+    // Agar session mein first time hai, tabhi Observer lagao
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
           setLoadMap(true);
-          // Ek baar load ho gaya toh observer ko hata do taaki memory free ho jaye
-          observer.disconnect();
+          sessionStorage.setItem('bajrang_map_loaded', 'true'); // Memory mein save kar lo
+          observer.disconnect(); // Kaam hote hi turant disconnect taaki background memory free ho jaye
         }
       },
-      // 800px pehle hi load karna shuru kardo, taaki mobile users ko delay feel na ho
-      { rootMargin: '800px' } 
+      // 800px pehle hi load karna shuru kardo, taaki mobile users ko blank space na dikhe
+      { rootMargin: '1200px' } 
     );
 
     if (mapRef.current) {
       observer.observe(mapRef.current);
     }
 
+    // OPTIMIZATION 3: Strict Cleanup function taaki component unmount hone pe observer garbage collect ho jaye
     return () => observer.disconnect();
   }, []);
 
@@ -38,7 +49,7 @@ const Contact = () => {
     >
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
 
-        {/* --- LEFT SIDE: INFO CARDS (Same as Before) --- */}
+        {/* --- LEFT SIDE: INFO CARDS --- */}
         <div className="lg:col-span-5 flex flex-col justify-center">
 
           <div className="mb-10">
@@ -113,27 +124,27 @@ const Contact = () => {
 
         {/* --- RIGHT SIDE: OPTIMIZED MAP SECTION --- */}
         <div 
-          ref={mapRef} // Observer yahan nazar rakhega
+          ref={mapRef} 
           className="lg:col-span-7 relative min-h-[400px] md:min-h-[500px] h-full w-full rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.5)] mt-8 lg:mt-0 flex flex-col bg-[#0a0a0a]"
         >
           
           <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/80 via-black/40 to-transparent z-10 pointer-events-none" />
 
-          {/* Conditional Rendering based on Scroll */}
+          {/* Conditional Rendering based on Scroll/SessionStorage */}
           {loadMap ? (
             <iframe
               title="Google Maps Location for Bajrang Fitness"
-              src={googleMapsLink}
+              src={GOOGLE_MAPS_LINK}
               width="100%"
               height="100%"
               style={{ border: 0 }}
               allowFullScreen={true}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              className="absolute inset-0 w-full h-full z-0 transition-opacity duration-700"
+              className="absolute inset-0 w-full h-full z-0 transition-opacity duration-700 opacity-100"
             ></iframe>
           ) : (
-             /* Subtle placeholder background pattern to keep UI looking premium while it loads */
+             /* Placeholder Background pattern to keep UI looking premium while it loads or waits to be scrolled into view */
             <div className="absolute inset-0 flex items-center justify-center z-0 bg-[#050505]">
                 <div className="w-10 h-10 border-4 border-orange-600/30 border-t-orange-600 rounded-full animate-spin"></div>
             </div>
@@ -141,7 +152,7 @@ const Contact = () => {
 
           {/* GET DIRECTIONS FLOATING BUTTON */}
           <a
-            href={googleMapsLink}
+            href={GOOGLE_MAPS_LINK}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Get Directions to Bajrang Fitness (opens in a new tab)"

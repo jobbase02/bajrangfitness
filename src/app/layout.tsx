@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import SmoothScroll from "./components/SmoothScroll";
 import FreeTrialPopup from "./components/TrialPopUp";
+import Chatbot from "./components/ChatBot";
 
 const title = "Bajrang Fitness Best Gym in Haldwani | Fitness Center – Pilikothi Road";
 const description = "Join the best gym in Haldwani on Pilikothi Road. Expert personal trainers, modern equipment, weight loss & bodybuilding programs. Start your fitness journey today!";
@@ -96,6 +97,7 @@ export default function RootLayout({
           {children}
         </SmoothScroll>
         <FreeTrialPopup />
+        <Chatbot />
       </body>
     </html>
   );
