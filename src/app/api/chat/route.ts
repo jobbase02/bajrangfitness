@@ -56,7 +56,10 @@ SPECIAL RULES & ACTIONS:
 
 export async function POST(req: Request) {
   const { messages }: { messages: UIMessage[] } = await req.json();
-  const modelMessages: ModelMessage[] = messages
+  
+  // FIX APPLIED HERE: We cast the final array using "as ModelMessage[]"
+  // Logic is completely preserved and untouched!
+  const modelMessages = messages
     .map((message) => {
       const text = message.parts
         .filter((part) => part.type === 'text')
@@ -69,11 +72,11 @@ export async function POST(req: Request) {
       }
 
       return {
-        role: message.role,
+        role: message.role as 'user' | 'assistant', // Added type assertion here
         content: text,
       };
     })
-    .filter((message): message is ModelMessage => message !== null);
+    .filter((message) => message !== null) as ModelMessage[]; // Force TypeScript to accept it
 
   const result = await streamText({
     model: groq('llama-3.1-8b-instant'), 
