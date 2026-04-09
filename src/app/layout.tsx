@@ -33,6 +33,49 @@ export const metadata: Metadata = {
   },
 };
 
+
+//business ke liye schema markup for better SEO and local search visibility
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ExerciseGym", 
+  "name": "Bajrang Fitness",
+  "image": "https://bajrangfitness.com/logo.png",
+  "description": "Best gym in Haldwani located at Pilikothi Road. We offer imported equipment, personal training, and a great fitness community.",
+  "@id": "https://bajrangfitness.com",
+  "url": "https://bajrangfitness.com",
+  "telephone": [
+    "+91-8445588806",
+    "+91-7253008213"
+  ], 
+  "email": "fitnessbajrang5@gmail.com",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Pilikothi Road, OPP Primary School",
+    "addressLocality": "Haldwani",
+    "addressRegion": "Uttarakhand",
+    "postalCode": "263139",
+    "addressCountry": "IN"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 29.2115784,
+    "longitude": 79.5057334
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+      ],
+      "opens": "05:00", 
+      "closes": "22:00"
+    }
+  ],
+  "sameAs": [
+    "https://instagram.com/bajrangfitness2026"
+  ]
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -40,6 +83,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body
         className={`antialiased`}
       >
