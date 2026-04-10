@@ -28,7 +28,7 @@ const Contact = () => {
           observer.disconnect();
         }
       },
-      { rootMargin: '1200px' } 
+      { rootMargin: '1200px' }
     );
 
     if (mapRef.current) {
@@ -39,8 +39,8 @@ const Contact = () => {
   }, []);
 
   return (
-    <section 
-      id="contact" 
+    <section
+      id="contact"
       aria-labelledby="contact-heading"
       className="py-24 px-4 md:px-8 max-w-7xl mx-auto border-t border-white/5 bg-[#050505]"
     >
@@ -103,15 +103,15 @@ const Contact = () => {
               <div>
                 <h4 className="text-white font-black uppercase text-sm mb-1">Address</h4>
                 <p className="text-gray-300 font-medium text-sm font-sans leading-relaxed">
-                  Pilikothi Road, OPP Primary School,<br />Haldwani, Uttarakhand
+                  Pilikothi Road, Near Narsingh Palace, OPP Govt. Primary School, Haldwani, Uttarakhand - 263139
                 </p>
               </div>
             </div>
 
           </div>
 
-          <a 
-            href="/inquire" 
+          <a
+            href="/inquire"
             className="mt-8 inline-flex items-center justify-center gap-3 bg-orange-600 text-black px-10 py-5 font-black uppercase text-sm tracking-widest shadow-[0_5px_15px_rgba(234,88,12,0.3)] hover:shadow-[0_0_20px_rgba(234,88,12,0.5)] hover:bg-white hover:-translate-y-1 transition-all duration-300 group w-full rounded-xl focus:outline-none focus-visible:ring-4 focus-visible:ring-white focus-visible:ring-offset-4 focus-visible:ring-offset-black"
           >
             Send A Message
@@ -120,22 +120,21 @@ const Contact = () => {
         </div>
 
         {/* --- RIGHT SIDE: OPTIMIZED MAP SECTION --- */}
-        <div 
-          ref={mapRef} 
+        <div
+          ref={mapRef}
           className="lg:col-span-7 relative min-h-[400px] md:min-h-[500px] h-full w-full rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.5)] mt-8 lg:mt-0 flex flex-col bg-[#0a0a0a]"
         >
-          
+
           <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/80 via-black/40 to-transparent z-10 pointer-events-none" />
 
           {/* Placeholder that fades out once iframe is FULLY ready */}
-          <div 
-            className={`absolute inset-0 flex flex-col items-center justify-center z-10 bg-[#0a0a0a] transition-opacity duration-1000 ${
-              iframeReady ? 'opacity-0 pointer-events-none' : 'opacity-100'
-            }`}
+          <div
+            className={`absolute inset-0 flex flex-col items-center justify-center z-10 bg-[#0a0a0a] transition-opacity duration-1000 ${iframeReady ? 'opacity-0 pointer-events-none' : 'opacity-100'
+              }`}
             aria-hidden="true"
           >
-             <div className="w-16 h-16 border-[3px] border-orange-600/20 border-t-orange-600 rounded-full animate-spin mb-4"></div>
-             <span className="text-gray-400 font-bold tracking-widest text-[10px] uppercase animate-pulse">Loading Map Coordinate...</span>
+            <div className="w-16 h-16 border-[3px] border-orange-600/20 border-t-orange-600 rounded-full animate-spin mb-4"></div>
+            <span className="text-gray-400 font-bold tracking-widest text-[10px] uppercase animate-pulse">Loading Map Coordinate...</span>
           </div>
 
           {/* Conditional Rendering based on Scroll/SessionStorage */}
@@ -157,7 +156,7 @@ const Contact = () => {
 
           {/* GET DIRECTIONS FLOATING BUTTON */}
           <a
-            href={GOOGLE_MAPS_LINK}
+            href="https://maps.app.goo.gl/CHcXwUJdf4Ltg4Xy8"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Get Directions to Bajrang Fitness (opens in a new tab)"

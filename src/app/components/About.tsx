@@ -157,10 +157,13 @@ const About = () => {
             <p className="text-gray-300 font-serif italic text-lg lg:text-xl leading-relaxed mb-6">
               "We wanted to build a gym where people walk in nervous and leave feeling like they belong. That's what we have created here in Haldwani, <span className='text-orange-500'>a home for fitness.</span>"
             </p>
-            <div className="flex items-center gap-4">
-              {/* A11Y FIX: aria-hidden to decorative initials */}
-              <div aria-hidden="true" className="w-14 h-14 rounded-full bg-orange-600 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-500">
-                <span className="text-white font-black text-xl tracking-wide">SS</span>
+            <div className="flex items-center gap-4" aria-label="Owner Profile: Shivraj Singh Supyal">
+              <div className="w-14 h-14 rounded-full overflow-hidden flex-shrink-0 group-hover:scale-110 transition-transform duration-500 bg-orange-600">
+                <img
+                  src="gallery/owner.jpeg"
+                  alt="Shivraj Singh Supyal, Gym Owner"
+                  className="w-full h-full object-cover"
+                />
               </div>
 
               <div className="flex flex-col">

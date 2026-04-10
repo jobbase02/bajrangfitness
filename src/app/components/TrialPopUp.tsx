@@ -10,7 +10,7 @@ export default function FreeTrialPopup() {
   // Popup Trigger Logic
   useEffect(() => {
     const hasSeenPopup = sessionStorage.getItem("bajrang_popup_seen");
-    
+
     if (!hasSeenPopup) {
       const timer = setTimeout(() => {
         setIsOpen(true);
@@ -67,7 +67,7 @@ export default function FreeTrialPopup() {
             <h2 id="popup-title" className="text-4xl font-black text-white uppercase italic tracking-tighter mb-2">
               Claim Your <span className="text-orange-500">Free Pass</span>
             </h2>
-            
+
             <p id="popup-desc" className="text-gray-400 font-bold text-sm uppercase tracking-widest mb-8">
               Experience the hardcore iron vibe at Bajrang Fitness before you commit.
             </p>
@@ -79,7 +79,7 @@ export default function FreeTrialPopup() {
                 onClick={() => setIsOpen(false)}
                 className="w-full bg-orange-600 text-black p-4 text-lg font-black uppercase hover:bg-white transition-colors duration-300 flex justify-center items-center gap-2 focus:outline-none focus-visible:ring-4 focus-visible:ring-white focus-visible:ring-offset-4 focus-visible:ring-offset-black"
               >
-                Get 1-Day Free Trial
+                Get 7-Day Free Trial
               </Link>
 
               {/* Secondary Option / Close Action */}

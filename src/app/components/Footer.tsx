@@ -8,17 +8,17 @@ const Footer = () => {
   return (
     <footer className="bg-[#050505] border-t border-white/5 pt-20 pb-8 px-4 md:px-8">
       <div className="max-w-7xl mx-auto">
-        
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
-          
+
           <div className="space-y-6">
             <div className="relative w-48 h-12">
-               <Image 
-                src="/logo.png" 
-                alt="Bajrang Fitness Logo" 
-                fill 
-                className="object-contain object-left scale-[1.5] origin-left" 
-               />
+              <Image
+                src="/logo.png"
+                alt="Bajrang Fitness Logo"
+                fill
+                className="object-contain object-left scale-[1.5] origin-left"
+              />
             </div>
             <p className="text-gray-500 font-bold text-xs leading-relaxed uppercase tracking-widest max-w-sm">
               Haldwani's premier fitness destination. We don't just build bodies; we build legacies. Join the tribe today.
@@ -59,7 +59,7 @@ const Footer = () => {
             <ul className="space-y-6 text-gray-500 font-bold uppercase text-xs leading-loose">
               <li className="flex gap-4 items-start group">
                 <MapPin className="text-orange-600 shrink-0 mt-1 group-hover:scale-110 transition-transform" size={20} aria-hidden="true" />
-                <span className="group-hover:text-white transition-colors">Pilikothi Road, OPP primary school,<br/>Haldwani, Uttarakhand</span>
+                <span className="group-hover:text-white transition-colors">Pilikothi Road, Near Narsingh Palace, <br /> OPP Govt. Primary School, Haldwani, Uttarakhand</span>
               </li>
               <li className="flex gap-4 items-center group">
                 <Phone className="text-orange-600 shrink-0 group-hover:scale-110 transition-transform" size={20} aria-hidden="true" />
@@ -79,24 +79,24 @@ const Footer = () => {
         </div>
 
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6 text-center md:text-left">
-          
+
           <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 text-[10px] font-black uppercase tracking-[0.3em] text-gray-500">
             <p className="text-white/80 flex items-center gap-1.5">
               Made with <Heart size={14} className="text-orange-500" fill="currentColor" aria-hidden="true" /> for Bajrang Fitness Haldwani
             </p>
             <span className="hidden md:inline text-white/20">|</span>
-            <Link 
-              href="/privacy-policy" 
+            <Link
+              href="/privacy-policy"
               className="hover:text-orange-500 transition-colors underline decoration-white/20 hover:decoration-orange-500 underline-offset-4 focus:outline-none focus-visible:text-orange-500 rounded-sm"
             >
               Privacy Policy
             </Link>
           </div>
-          
+
           <p className="text-[9px] font-black uppercase tracking-[0.4em] text-zinc-500 hover:text-gray-300 transition-colors duration-500">
             Developed By <a href="https://elevenxsolutions.com" target="_blank" rel="noopener noreferrer" className="hover:text-orange-500 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 rounded-sm">elevenxsolutions.com</a>
           </p>
-          
+
         </div>
 
       </div>

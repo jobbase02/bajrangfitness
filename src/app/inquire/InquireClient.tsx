@@ -10,7 +10,7 @@ import Navbar from '../components/Navbar';
 const InquireForm = () => {
   const searchParams = useSearchParams();
   const planParam = searchParams.get('plan');
-  
+
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -72,7 +72,7 @@ const InquireForm = () => {
           <div>
             <p className="text-[10px] font-black uppercase tracking-[0.2em] text-orange-500">Selected Plan</p>
             <p className="text-white font-bold uppercase tracking-wide">
-              {planParam === 'FreeTrialPass' ? '1-DAY FREE TRIAL' : `${planParam} Membership`}
+              {planParam === 'FreeTrialPass' ? '7-DAY FREE TRIAL' : `${planParam} Membership`}
             </p>
           </div>
         </div>
@@ -117,7 +117,7 @@ const InquireForm = () => {
           className="w-full bg-[#050505] border-2 border-white/10 p-5 focus:border-orange-500 outline-none font-bold text-white transition-colors uppercase cursor-pointer appearance-none hover:border-white/20 disabled:opacity-50"
         >
           <option value="" disabled className="text-gray-600">-- SELECT YOUR MEMBERSHIP PLAN --</option>
-          <option value="FreeTrialPass">FREE TRIAL PASS (1 DAY)</option>
+          <option value="FreeTrialPass">FREE TRIAL PASS (7 DAY)</option>
           <option value="Starter">STARTER (1 MONTH)</option>
           <option value="Quarterly">QUARTERLY (3 MONTHS) - MOST POPULAR</option>
           <option value="Half Yearly">HALF YEARLY (6 MONTHS)</option>
@@ -199,7 +199,8 @@ const InquirePage = () => {
                 </div>
                 <div>
                   <p className="text-gray-500 font-black uppercase text-[10px] tracking-widest">Location</p>
-                  <p className="text-sm font-bold uppercase tracking-tight text-white leading-tight">Pilikothi Road, OPP primary school<br />Haldwani, UK</p>
+                  <p className="text-sm font-bold uppercase tracking-tight text-white leading-tight">Pilikothi Road, Near Narsingh Palace,
+                    OPP Govt. Primary School,<br />Haldwani, Uttarakhand</p>
                 </div>
               </div>
             </div>

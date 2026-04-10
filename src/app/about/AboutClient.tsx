@@ -10,7 +10,8 @@ import {
   Wind,
   Timer,
   Award,
-  Instagram
+  Instagram,
+  Quote
 } from 'lucide-react';
 import Image from 'next/image';
 import Footer from '../components/Footer';
@@ -96,6 +97,74 @@ const AboutPage = () => {
           </motion.div>
         </div>
       </section>
+
+      {/* --- FOUNDER MESSAGE SECTION --- */}
+      <section className="py-24 px-4 md:px-8 bg-[#050505]">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+
+          {/* Image Side - Reverse layout compared to Hero */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="relative h-[450px] md:h-[550px] border-r-8 border-orange-600 shadow-[-20px_20px_0px_#111] overflow-hidden group order-2 md:order-1"
+            onContextMenu={(e) => e.preventDefault()}
+          >
+            <div className="absolute inset-0 z-10 w-full h-full pointer-events-auto cursor-default" />
+            <Image
+              src="/gallery/owner.jpeg"
+              alt="Shivraj Singh Supyal - Founder of Bajrang Fitness"
+              fill
+              draggable={false}
+              className="object-cover object-top transition-all duration-700 pointer-events-none select-none group-hover:scale-105"
+            />
+          </motion.div>
+
+          {/* Text Side */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="order-1 md:order-2"
+          >
+            <div className="flex items-center gap-3 mb-6">
+              <div className="h-[2px] w-12 bg-orange-500"></div>
+              <h2 className="text-orange-500 font-black tracking-[0.3em] uppercase text-sm">Meet The Founder</h2>
+            </div>
+
+            <h3 className="text-5xl md:text-6xl font-[1000] uppercase italic tracking-tighter text-white mb-8 leading-none">
+              MORE THAN JUST <br /><span className="text-orange-500">A GYM</span>
+            </h3>
+
+            <div className="relative">
+              <Quote className="absolute -top-6 -left-6 text-white/5" size={80} />
+              <p className="text-gray-300 font-medium text-base md:text-lg leading-relaxed mb-8 relative z-10">
+                "When I envisioned Bajrang Fitness, the goal wasn't just to open another business. It was to build a community for the people of Haldwani. A place where genuine fitness and hard work are prioritized over flashy trends. We've brought in the best equipment, but what truly makes this place special is the dedication of our members. This isn't just my gym; it's our iron sanctuary."
+              </p>
+            </div>
+
+            <div className="flex items-center justify-between border-t border-white/10 pt-8 mt-4">
+              <div>
+                <h4 className="text-white font-black text-xl uppercase tracking-wider">Shivraj Singh Supyal</h4>
+                <p className="text-orange-500 font-bold text-xs uppercase tracking-widest mt-1">Owner & Founder</p>
+              </div>
+
+              {/* Social Icon */}
+              <a
+                href="https://www.instagram.com/shivraj2879"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-12 h-12 rounded-full bg-zinc-900 border border-white/10 flex items-center justify-center hover:bg-orange-600 hover:border-orange-600 transition-all group focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
+                aria-label="Follow Owner on Instagram"
+              >
+                <Instagram className="text-gray-400 group-hover:text-black transition-colors" size={20} />
+              </a>
+            </div>
+          </motion.div>
+
+        </div>
+      </section>
+
       {/* --- WHAT WE PROVIDE SECTION --- */}
       <section className="py-24 bg-zinc-950 px-4 md:px-8 border-y border-white/5">
         <div className="max-w-7xl mx-auto">
